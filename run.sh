@@ -2,7 +2,9 @@
 
 cd $APP_DIR
 ADMIN_PASS=${ADMIN_PASS:-}
-python manage.py migrate --noinput
+python manage.py syncdb
+python manage.py makemigrations
+python manage.py migrate
 
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'docker@localhost', 'password')" | python manage.py shell
 

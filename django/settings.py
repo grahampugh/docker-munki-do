@@ -1,5 +1,63 @@
-# Django settings for munkiwebadmin project.
 import os
+from django.conf import global_settings
+
+##############################
+# MunkiWeb-specific settings #
+##############################
+
+# APPNAME is user-visable web app name
+APPNAME = 'MunkiWebAdmin'
+# MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
+MUNKI_REPO_DIR = '/munki_repo'
+ICONS_DIR = 'icons'
+# provide the path to the git binary if you want MunkiWeb to add and commit
+# manifest edits to a git repo
+# if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
+# or commit
+GIT_PATH = ''
+
+# name of the key in a manifest file that names the user or dept
+MANIFEST_USERNAME_KEY = 'user'
+# set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
+MANIFEST_USERNAME_IS_EDITABLE = False
+
+# enable WARRANTY to show warranty information on the detail machine report
+WARRANTY_LOOKUP_ENABLED = True
+
+# managed updates visible in manifests
+MANAGED_UPDATES_ENABLED = False
+
+# display SSH-Button in detal view
+SSH_BUTTON_ENABLED = False
+
+# display VNC-Button in detal view
+VNC_BUTTON_ENABLED = False
+
+#if true all software packages are shown in autocompletion not only the one in included catalogs
+ALL_ITEMS = False
+
+#user serial_number or hostname for client manifest
+CLIENT_MANIFEST = 'serial_number'
+
+# enable MODEL_LOOKUP_ENABLED to show a human readable version of the machines model
+MODEL_LOOKUP_ENABLED = True
+
+# enable Business units
+BUSINESS_UNITS_ENABLED = False
+
+# if MunkiWebAdmin is behind a proxy, and WARRANTY_LOOKUP_ENABLED or
+# MODEL_LOOKUP_ENABLED are enabled, enter the details for the proxy server in
+# the format user:password@example.com:port (user:password@ and :port are 
+# optional), otherwise leave blank
+PROXY_ADDRESS = ""
+
+# needed for productive mode
+ALLOWED_HOSTS = ['*']
+
+TOKEN_TIMEOUT_DAYS = 1
+
+ANONYMOUS_USER_ID = -1
+# -------------------------
 
 USE_LDAP = False
 # LDAP authentication support
@@ -31,20 +89,20 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ("Docker User", "docker@localhost")
+     ('Admin', 'admin@mydomain.com'),
 )
 
 MANAGERS = ADMINS
 
+# using sqlite3
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.environ['DB_NAME'],                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': os.environ['DB_PORT_5432_TCP_ADDR'],                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': os.environ['DB_PORT_5432_TCP_PORT'],                      # Set to empty string for default.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': os.path.join(PROJECT_DIR, 'munkiwebadmin.db'),                      # Or path to database file if using sqlite3.
+        'USER': '',     # Not used with sqlite3.
+        'PASSWORD': '', # Not used with sqlite3.
+        'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '', # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -67,11 +125,13 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = os.environ['TIME_ZONE']
+TIME_ZONE = 'Europe/Zurich'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'de-CH'
+
+# -----------------
 
 SITE_ID = 1
 
@@ -83,35 +143,19 @@ USE_I18N = True
 # calendars according to the current locale
 USE_L10N = True
 
-# Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(MUNKI_REPO_DIR, ICONS_DIR)
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
-# Absolute path to the directory static files should be collected to.
-# Don't put anything in this directory yourself; store your static files
-# in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
-# URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_DIR, 'site_static'),
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
@@ -120,11 +164,15 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'x@hgx4r!1rm@c4lax96tx88*d1v+m$&)w1ur4-xvcqj(8as_$q'
 
-# List of callables that know how to import templates from various sources.
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "munkiwebadmin.processor.index",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -139,21 +187,20 @@ if USE_LDAP:
     AUTHENTICATION_BACKENDS = (
         'django_auth_ldap.backend.LDAPBackend',
         'django.contrib.auth.backends.ModelBackend',
+        'tokenapi.backends.TokenBackend',
     )
 else:
     AUTHENTICATION_BACKENDS = (
         'django.contrib.auth.backends.ModelBackend',
+        'tokenapi.backends.TokenBackend',
     )
 
 LOGIN_URL='/login/'
-LOGIN_REDIRECT_URL='/report/overview'
+LOGIN_REDIRECT_URL='/computer/dashboard'
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'munkiwebadmin.urls'
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(PROJECT_DIR, 'templates'),
 )
 
@@ -161,30 +208,20 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    #'django.contrib.sites',
+    'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    # Uncomment the next line if you've installed django_wsgiserver
-    # and want to serve this Django app using it
-    # 'django_wsgiserver',
-    'south',
+    'guardian',
+    'tokenapi',
     'reports',
     'catalogs',
+    'pkgs',
     'manifests',
     'inventory',
     'licenses',
-    'admin_tools',
 )
 
-# A sample logging configuration. The only tangible logging
-# performed by this configuration is to send an email to
-# the site admins on every HTTP 500 error.
-# See http://docs.djangoproject.com/en/dev/topics/logging for
-# more details on how to customize your logging configuration.
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -208,36 +245,3 @@ LOGGING = {
         },
     }
 }
-
-##############################
-# MunkiWeb-specific settings #
-##############################
-# APPNAME is user-visable web app name
-APPNAME = os.environ['APPNAME']
-# MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
-MUNKI_REPO_DIR = os.environ['MUNKI_REPO_DIR']
-
-# provide the path to the git binary if you want MunkiWeb to add and commit
-# manifest edits to a git repo
-# if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
-# or commit
-#GIT_PATH = '/usr/bin/git'
-
-# name of the key in a manifest file that names the user or dept
-MANIFEST_USERNAME_KEY = os.environ['MANIFEST_USERNAME_KEY']
-
-# set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
-MANIFEST_USERNAME_IS_EDITABLE = os.environ['MANIFEST_USERNAME_IS_EDITABLE']
-
-# enable WARRANTY to show warranty information on the detail machine report
-WARRANTY_LOOKUP_ENABLED = os.environ['WARRANTY_LOOKUP_ENABLED']
-
-# enable MODEL_LOOKUP_ENABLED to show a human readable version of the machines 
-# model
-MODEL_LOOKUP_ENABLED = os.environ['MODEL_LOOKUP_ENABLED']
-
-# if MunkiWebAdmin is behind a proxy, and WARRANTY_LOOKUP_ENABLED or
-# MODEL_LOOKUP_ENABLED are enabled, enter the details for the proxy server in
-# the format user:password@example.com:port (user:password@ and :port are 
-# optional), otherwise leave blank
-PROXY_ADDRESS = ""

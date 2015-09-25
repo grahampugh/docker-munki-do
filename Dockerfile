@@ -21,13 +21,12 @@ RUN apt-get update && apt-get install -y \
   python-dev \
   libpq-dev
 
-RUN git clone https://github.com/SteveKueng/munkiwebadmin.git $APP_DIR
-RUN cd $APP_DIR && \
-    git checkout tags/v0.3
+RUN git clone https://github.com/grahampugh/munkiwebadmin-2.git $APP_DIR
+RUN git clone https://github.com/munki/munki.git /munki-tools
 ADD django/requirements.txt $APP_DIR/
 RUN mkdir -p /etc/my_init.d
 RUN pip install -r $APP_DIR/requirements.txt
-ADD django/ $APP_DIR/
+ADD django/ $APP_DIR/munkiwebadmin/
 #ADD nginx/nginx-env.conf /etc/nginx/main.d/
 ADD nginx/munkiwebadmin.conf /etc/nginx/sites-enabled/munkiwebadmin.conf
 ADD settings.py $APP_DIR/munkiwebadmin/

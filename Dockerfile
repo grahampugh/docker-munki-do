@@ -29,7 +29,6 @@ RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkiwebadmin/
 #ADD nginx/nginx-env.conf /etc/nginx/main.d/
 ADD nginx/munkiwebadmin.conf /etc/nginx/sites-enabled/munkiwebadmin.conf
-ADD settings.py $APP_DIR/munkiwebadmin/
 ADD run.sh /etc/my_init.d/run.sh
 RUN rm -f /etc/service/nginx/down
 RUN rm -f /etc/nginx/sites-enabled/default

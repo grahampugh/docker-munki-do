@@ -1,7 +1,7 @@
-docker-munkiwebadmin
+docker-munki-catalog-admin
 ==========
 
-This Docker container runs [MunkiWebAdmin 2](https://github.com/SteveKueng/munkiwebadmin/wiki/Getting-started).
+This Docker container runs Munki-Catalog-Admin, which is a fork of MunkiWebAdmin.
 The container expects a linked PostgreSQL database container and that your munki repo is mounted
 in /munki_repo
 
@@ -27,9 +27,9 @@ $ ./setup_db.sh
 ```
 
 #Image Creation
-```$ docker build -t="grahampugh/munkiwebadmin" .```
+```$ docker build -t="grahampugh/munki-catalog-admin" .```
 
-#Running the MunkiWebAdmin Container
+#Running the Munki-Catalog-Admin Container
 
 ```bash
 $ docker run -d --name="munkiwebadmin" \
@@ -40,6 +40,6 @@ $ docker run -d --name="munkiwebadmin" \
   -e DB_NAME=munkiwebadmin \
   -e DB_USER=admin \
   -e DB_PASS=password \
-  grahampugh/munkiwebadmin
+  grahampugh/munki-catalog-admin
 ```
 This assumes your Munki repo is mounted at /tmp/munki_repo.

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 docker-munkiwebadmin
 ==========
 
@@ -49,3 +50,8 @@ This assumes your Munki repo is mounted at /tmp/munki_repo.
 * add support for sqlite and mysql
 * add support for SSL
 * add support for git
+=======
+# docker-munkiwebadmin-2
+Docker build for MunkiWebAdmin 2 (Steve Koeng's version)
+
+>>>>>>> 4b72c1621dc2d40de1f4dfbd18cb3ad655998a1a

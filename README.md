@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 docker-munkiwebadmin
 ==========
 
-This Docker container runs [MunkiWebAdmin](https://code.google.com/p/munki/wiki/MunkiWebAdmin).
+This Docker container runs [MunkiWebAdmin 2](https://github.com/SteveKueng/munkiwebadmin/wiki/Getting-started).
 The container expects a linked PostgreSQL database container and that your munki repo is mounted
 in /munki_repo
 
@@ -28,30 +27,19 @@ $ ./setup_db.sh
 ```
 
 #Image Creation
-```$ docker build -t="groob/munkiwebadmin" .```
+```$ docker build -t="grahampugh/munkiwebadmin" .```
 
 #Running the MunkiWebAdmin Container
 
 ```bash
 $ docker run -d --name="munkiwebadmin" \
-  -p 80:80 \
+  -p 8000:8000 \
   --link postgres-munkiwebadmin:db \
   -v /tmp/munki_repo:/munki_repo \
   -e ADMIN_PASS=pass \
   -e DB_NAME=munkiwebadmin \
   -e DB_USER=admin \
   -e DB_PASS=password \
-  groob/munkiwebadmin
+  grahampugh/munkiwebadmin
 ```
 This assumes your Munki repo is mounted at /tmp/munki_repo.
-
-#TODO
-* add support for logging
-* add support for sqlite and mysql
-* add support for SSL
-* add support for git
-=======
-# docker-munkiwebadmin-2
-Docker build for MunkiWebAdmin 2 (Steve Koeng's version)
-
->>>>>>> 4b72c1621dc2d40de1f4dfbd18cb3ad655998a1a

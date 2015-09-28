@@ -125,11 +125,11 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Zurich'
+TIME_ZONE = 'America/New_York'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'de-CH'
+LANGUAGE_CODE = 'en-US'
 
 # -----------------
 
@@ -196,7 +196,7 @@ else:
     )
 
 LOGIN_URL='/login/'
-LOGIN_REDIRECT_URL='/computer/dashboard'
+LOGIN_REDIRECT_URL='/catalog'
 
 ROOT_URLCONF = 'munkiwebadmin.urls'
 
@@ -212,14 +212,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'guardian',
     'tokenapi',
-    'reports',
     'catalogs',
-    'pkgs',
     'manifests',
-    'inventory',
-    'licenses',
+    'pkgs',
 )
 
 LOGGING = {

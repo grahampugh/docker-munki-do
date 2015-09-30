@@ -8,9 +8,9 @@ MAINTAINER Graham Pugh <g.r.pugh@gmail.com>
 # Set correct environment variables.
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
-ENV APP_DIR /home/app/munkiwebadmin
+ENV APP_DIR /home/app/munkido
 ENV TIME_ZONE America/New_York
-ENV APPNAME MunkiWebAdmin
+ENV APPNAME Munki-Do
 
 # Use baseimage-docker's init process.
 CMD ["/sbin/my_init"]
@@ -22,20 +22,20 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone -b rationalise https://github.com/grahampugh/munki-catalog-admin.git $APP_DIR  #force3
+RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR  #force9
 ADD django/requirements.txt $APP_DIR/
 RUN mkdir -p /etc/my_init.d
 RUN pip install -r $APP_DIR/requirements.txt
-ADD django/ $APP_DIR/munkiwebadmin/
+ADD django/ $APP_DIR/munkido/
 #ADD nginx/nginx-env.conf /etc/nginx/main.d/
-ADD nginx/munkiwebadmin.conf /etc/nginx/sites-enabled/munkiwebadmin.conf
+ADD nginx/munkido.conf /etc/nginx/sites-enabled/munkido.conf
 ADD run.sh /etc/my_init.d/run.sh
 RUN rm -f /etc/service/nginx/down
 RUN rm -f /etc/nginx/sites-enabled/default
 RUN groupadd munki
 RUN usermod -g munki app
 
-VOLUME ["/munki_repo", "/home/app/munkiwebadmin" ]
+VOLUME ["/munki_repo", "/home/app/munkido" ]
 EXPOSE 80
 
 # Clean up APT when done.

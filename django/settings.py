@@ -6,7 +6,7 @@ from django.conf import global_settings
 ##############################
 
 # APPNAME is user-visable web app name
-APPNAME = 'MunkiWebAdmin'
+APPNAME = 'Munki-Do'
 # MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
 MUNKI_REPO_DIR = '/munki_repo'
 ICONS_DIR = 'icons'
@@ -172,7 +172,7 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
-    "munkiwebadmin.processor.index",
+    "munkido.processor.index",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -198,7 +198,7 @@ else:
 LOGIN_URL='/login/'
 LOGIN_REDIRECT_URL='/catalog'
 
-ROOT_URLCONF = 'munkiwebadmin.urls'
+ROOT_URLCONF = 'munkido.urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_DIR, 'templates'),

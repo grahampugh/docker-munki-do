@@ -1,7 +1,7 @@
-docker-munki-catalog-admin
+docker-munki-do
 ==========
 
-This Docker container runs Munki-Catalog-Admin, which is a fork of MunkiWebAdmin.
+This Docker container runs Munki-Do, which is a fork of MunkiWebAdmin.
 The container expects a linked PostgreSQL database container and that your munki repo is mounted
 in /munki_repo
 

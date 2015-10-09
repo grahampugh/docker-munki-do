@@ -1,4 +1,5 @@
 import os
+import socket
 from django.conf import global_settings
 
 ##############################
@@ -10,6 +11,7 @@ APPNAME = 'Munki-Do'
 # MUNKI_REPO_DIR holds the local filesystem path to the Munki repo
 MUNKI_REPO_DIR = '/munki_repo'
 ICONS_DIR = 'icons'
+PKGS_DIR = 'pkgs'
 # provide the path to the git binary if you want MunkiWeb to add and commit
 # manifest edits to a git repo
 # if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
@@ -57,6 +59,7 @@ ALLOWED_HOSTS = ['*']
 TOKEN_TIMEOUT_DAYS = 1
 
 ANONYMOUS_USER_ID = -1
+
 # -------------------------
 
 USE_LDAP = False
@@ -147,6 +150,10 @@ MEDIA_ROOT = os.path.join(MUNKI_REPO_DIR, ICONS_DIR)
 
 MEDIA_URL = '/media/'
 
+MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
+
+MUNKI_PKG_URL = '/munki_repo/'
+
 STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 STATIC_URL = '/static/'
@@ -173,6 +180,7 @@ TEMPLATE_LOADERS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "munkido.processor.index",
+    "django.core.context_processors.request",
 )
 
 MIDDLEWARE_CLASSES = (
@@ -212,6 +220,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'munkido',
     'tokenapi',
     'catalogs',
     'manifests',

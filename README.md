@@ -1,7 +1,7 @@
 docker-munki-do
 ===============
 
-This Docker container runs Munki-Do, which is a fork of MunkiWebAdmin.
+This Docker container runs [Munki-Do](https://github.com/grahampugh/munki-do), which is a fork of MunkiWebAdmin.
 Several options, such as the timezone and admin password are customizable using environment variables.
 
 #Docker Machine

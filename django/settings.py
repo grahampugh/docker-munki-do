@@ -16,7 +16,7 @@ PKGS_DIR = 'pkgs'
 # manifest edits to a git repo
 # if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = ''
+GIT_PATH = '/usr/bin/git'
 
 # name of the key in a manifest file that names the user or dept
 MANIFEST_USERNAME_KEY = 'user'

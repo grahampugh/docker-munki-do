@@ -1,5 +1,6 @@
 import os
 import socket
+import logging
 from django.conf import global_settings
 
 ##############################
@@ -239,21 +240,16 @@ INSTALLED_APPS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-     },
     'handlers': {
-        'mail_admins': {
+        'file': {
             'level': 'ERROR',
-	    'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/error.log',
+        },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
+        'manifests.models': {
+            'handlers': ['file'],
             'level': 'ERROR',
             'propagate': True,
         },

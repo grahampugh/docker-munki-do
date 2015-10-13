@@ -45,7 +45,7 @@ docker build -t="grahampugh/munki-do" .
 docker run -d --restart=always --name munki-do \
    -p 8000:8000 \
    --link postgres-munkiwebadmin:db \
-#   -v $MUNKI_REPO:/munki_repo \
+   -v $MUNKI_REPO:/munki_repo \
    -e ADMIN_PASS=pass \
    -e DB_NAME=munkiwebadmin \
    -e DB_USER=admin \

@@ -23,10 +23,11 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR  #force28
+RUN git clone -b logging https://github.com/grahampugh/munki-do.git $APP_DIR  #force34
 ADD django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/
+RUN mkdir -p /var/log/django && touch /var/log/django/error.log
 #ADD nginx/nginx-env.conf /etc/nginx/main.d/
 ADD nginx/munkido.conf /etc/nginx/sites-enabled/munkido.conf
 ADD run.sh /etc/my_init.d/run.sh
@@ -35,16 +36,17 @@ RUN rm -f /etc/nginx/sites-enabled/default
 RUN groupadd munki
 RUN usermod -g munki app
 
-# Required for a munki_repo using git
+
+VOLUME ["/munki_repo", "/home/app/munkido" ]
+EXPOSE 8000
+
+# Required for a munki_repo using git in Bitbucket...
 ADD id_rsa /root/.ssh/id_rsa
 RUN touch /root/.ssh/known_hosts
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
 RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
-RUN git clone git@bitbucket.org:grahampugh/munki_repo.git /munki_repo
-
-
-VOLUME ["/home/app/munkido" ]
-EXPOSE 80
+RUN cd /munki_repo && git config user.email "root@docker"
+RUN cd /munki_repo && git config user.name "Docker Root"
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

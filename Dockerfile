@@ -35,7 +35,12 @@ RUN rm -f /etc/nginx/sites-enabled/default
 RUN groupadd munki
 RUN usermod -g munki app
 
-VOLUME ["/munki_repo", "/home/app/munkido" ]
+# Required for a munki_repo using git
+ADD Users/glgrp/.ssh/id_rsa /root/.ssh/id_rsa
+RUN git clone git@bitbucket.org:grahampugh/munki_repo.git /munki_repo
+
+
+VOLUME ["/home/app/munkido" ]
 EXPOSE 80
 
 # Clean up APT when done.

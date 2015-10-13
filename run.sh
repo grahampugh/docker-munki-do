@@ -2,7 +2,7 @@
 
 cd $APP_DIR
 ADMIN_PASS=${ADMIN_PASS:-}
-python manage.py syncdb
+python manage.py syncdb --all
 python manage.py makemigrations
 python manage.py migrate
 

@@ -3,7 +3,7 @@ import socket
 from django.conf import global_settings
 
 ##############################
-# MunkiWeb-specific settings #
+# Munki-Do-specific settings #
 ##############################
 
 # APPNAME is user-visable web app name
@@ -31,6 +31,10 @@ MUNKI_PKG_ROOT = os.path.join(REMOTE_MUNKI_URL, PKGS_DIR)
 MANIFEST_USERNAME_KEY = 'user'
 # set MANIFEST_USERNAME_IS_EDITABLE to allow edits to the displayed username
 MANIFEST_USERNAME_IS_EDITABLE = False
+
+# path to makecatalogs - required for packages section
+#DEFAULT_MAKECATALOGS = "/usr/local/munki/makecatalogs"
+DEFAULT_MAKECATALOGS = "/munki-tools/code/client/makecatalogs"
 
 # enable WARRANTY to show warranty information on the detail machine report
 WARRANTY_LOOKUP_ENABLED = True

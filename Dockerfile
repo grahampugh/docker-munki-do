@@ -17,6 +17,7 @@ CMD ["/sbin/my_init"]
 
 # Install python
 RUN apt-get update && apt-get install -y \
+  openssh-server \
   python-pip \
   python-dev \
   libpq-dev
@@ -24,7 +25,6 @@ RUN apt-get update && apt-get install -y \
 RUN git clone https://github.com/munki/munki.git /munki-tools
 RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR  #force28
 ADD django/requirements.txt $APP_DIR/
-RUN mkdir -p /etc/my_init.d
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/
 #ADD nginx/nginx-env.conf /etc/nginx/main.d/
@@ -36,7 +36,10 @@ RUN groupadd munki
 RUN usermod -g munki app
 
 # Required for a munki_repo using git
-ADD Users/glgrp/.ssh/id_rsa /root/.ssh/id_rsa
+ADD id_rsa /root/.ssh/id_rsa
+RUN touch /root/.ssh/known_hosts
+RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
+RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 RUN git clone git@bitbucket.org:grahampugh/munki_repo.git /munki_repo
 
 

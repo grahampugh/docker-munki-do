@@ -39,11 +39,23 @@ RUN usermod -g munki app
 VOLUME ["/munki_repo", "/home/app/munkido" ]
 EXPOSE 8000
 
-# Required for a munki_repo using git in Bitbucket...
-ADD id_rsa /root/.ssh/id_rsa
-RUN touch /root/.ssh/known_hosts
-RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
-RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
+# Uncomment the following lines to copy an ssh key to the Docker image 
+# in order to allow passwordless `git push`
+# This is necessary in Bitbucket and should also work in Github
+# if you change the ssh-keyscan to `github.com`, so that you 
+# dont have to pass passwords in plain text
+
+# You will need to add an `id_rsa` file to the same path as the Dockerfile,
+# as Docker cannot operate on files outside the current working directory.
+
+# To generate an SSH key, follow the instructions at:
+# https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html
+# The id_rsa file will then be found at ~/.ssh
+
+#ADD id_rsa /root/.ssh/id_rsa
+#RUN touch /root/.ssh/known_hosts
+#RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
+#RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

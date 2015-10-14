@@ -18,15 +18,12 @@ PKGS_DIR = 'pkgs'
 # manifest edits to a git repo
 # if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = '/usr/bin/git'
+GIT_PATH = ''
+#GIT_PATH = '/usr/bin/git'
 
 # The following is used for the download links for pkgs.
 # It assumes that the full munki_repo is accessable at /munki_repo
-# If you are using git and aren't syncing the pkgs folder,
-# you will need to set a different path:
-# MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
-REMOTE_MUNKI_URL = 'http://192.168.99.100/repo'
-MUNKI_PKG_ROOT = os.path.join(REMOTE_MUNKI_URL, PKGS_DIR)
+MUNKI_PKG_ROOT = os.path.join(MUNKI_REPO_DIR, PKGS_DIR)
 
 # name of the key in a manifest file that names the user or dept
 MANIFEST_USERNAME_KEY = 'user'

@@ -58,3 +58,23 @@ or
 $ make run
 ```
 This assumes your Munki repo is mounted at /tmp/munki_repo.
+
+#Using with a Munki Repo that uses Git
+
+Munki-Do is now able to update your Git-enabled Munki Repo. This container does not
+clone the repo internally - it links to a Munki Container, so that Munki-Do
+operates on the production Repository. Nevertheless, it maintains your Git repo to which
+it is linked. 
+
+You could choose to link to a container that was an "unstable" branch of your Munki Repo,
+and manually merge to the master by some other means (manual intervention, or a nightly
+`cron` job, for instance).
+
+To enable Git operations, set the path to `git` (`GIT_PATH`) in `settings.py`. 
+Unless you change the base container, the path is `/usr/bin/git`.
+*(TO DO - enable this as a flag in the Docker run command)*
+
+To use an SSH key (required for password-protected Git repositories): 
+  * generate an SSH key (`id-rsa` file) as per the instructions [here](https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html) 
+  * copy the `id_rsa` file into the same folder as the Dockerfile
+  * unhash the relevant lines in the `Dockerfile` to copy the file into the container

@@ -16,10 +16,13 @@ PKGS_DIR = 'pkgs'
 
 # provide the path to the git binary if you want MunkiWeb to add and commit
 # manifest edits to a git repo
-# if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
+# if GIT_PATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
 #GIT_PATH = ''
 GIT_PATH = '/usr/bin/git'
+# If GIT_IGNORE_PKGS is not empty, git will attempt to remove packages.
+# Otherwise, the packages will be deleted as standard.
+GIT_IGNORE_PKGS = 'yes'
 
 # The following is used for the download links for pkgs.
 # It assumes that the full munki_repo is accessable at /munki_repo

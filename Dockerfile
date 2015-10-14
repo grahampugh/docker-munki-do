@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR
+RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR   #forceit2!
 ADD django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/

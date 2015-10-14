@@ -253,5 +253,10 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
+        'pkgs.models': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
     }
 }

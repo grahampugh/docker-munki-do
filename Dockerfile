@@ -23,7 +23,7 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone -b logging https://github.com/grahampugh/munki-do.git $APP_DIR  #force34
+RUN git clone -b logging https://github.com/grahampugh/munki-do.git $APP_DIR  #force38
 ADD django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/
@@ -36,7 +36,6 @@ RUN rm -f /etc/nginx/sites-enabled/default
 RUN groupadd munki
 RUN usermod -g munki app
 
-
 VOLUME ["/munki_repo", "/home/app/munkido" ]
 EXPOSE 8000
 
@@ -45,8 +44,6 @@ ADD id_rsa /root/.ssh/id_rsa
 RUN touch /root/.ssh/known_hosts
 RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
 RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
-RUN cd /munki_repo && git config user.email "root@docker"
-RUN cd /munki_repo && git config user.name "Docker Root"
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

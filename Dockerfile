@@ -23,12 +23,11 @@ RUN apt-get update && apt-get install -y \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone -b logging https://github.com/grahampugh/munki-do.git $APP_DIR  #force38
+RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR
 ADD django/requirements.txt $APP_DIR/
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/
 RUN mkdir -p /var/log/django && touch /var/log/django/error.log
-#ADD nginx/nginx-env.conf /etc/nginx/main.d/
 ADD nginx/munkido.conf /etc/nginx/sites-enabled/munkido.conf
 ADD run.sh /etc/my_init.d/run.sh
 RUN rm -f /etc/service/nginx/down

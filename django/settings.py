@@ -18,8 +18,8 @@ PKGS_DIR = 'pkgs'
 # manifest edits to a git repo
 # if GITPATH is undefined or None MunkiWeb will not attempt to do a git add
 # or commit
-GIT_PATH = ''
-#GIT_PATH = '/usr/bin/git'
+#GIT_PATH = ''
+GIT_PATH = '/usr/bin/git'
 
 # The following is used for the download links for pkgs.
 # It assumes that the full munki_repo is accessable at /munki_repo

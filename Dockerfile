@@ -51,10 +51,10 @@ EXPOSE 8000
 # https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html
 # The id_rsa file will then be found at ~/.ssh
 
-#ADD id_rsa /root/.ssh/id_rsa
-#RUN touch /root/.ssh/known_hosts
-#RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
-#RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
+ADD id_rsa /root/.ssh/id_rsa
+RUN touch /root/.ssh/known_hosts
+RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
+RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

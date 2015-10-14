@@ -17,17 +17,17 @@ CMD ["/sbin/my_init"]
 
 # Install python
 RUN apt-get update && apt-get install -y \
+  openssh-server \
   python-pip \
   python-dev \
   libpq-dev
 
 RUN git clone https://github.com/munki/munki.git /munki-tools
-RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR  #force28
+RUN git clone https://github.com/grahampugh/munki-do.git $APP_DIR
 ADD django/requirements.txt $APP_DIR/
-RUN mkdir -p /etc/my_init.d
 RUN pip install -r $APP_DIR/requirements.txt
 ADD django/ $APP_DIR/munkido/
-#ADD nginx/nginx-env.conf /etc/nginx/main.d/
+RUN mkdir -p /var/log/django && touch /var/log/django/error.log
 ADD nginx/munkido.conf /etc/nginx/sites-enabled/munkido.conf
 ADD run.sh /etc/my_init.d/run.sh
 RUN rm -f /etc/service/nginx/down
@@ -36,7 +36,25 @@ RUN groupadd munki
 RUN usermod -g munki app
 
 VOLUME ["/munki_repo", "/home/app/munkido" ]
-EXPOSE 80
+EXPOSE 8000
+
+# Uncomment the following lines to copy an ssh key to the Docker image 
+# in order to allow passwordless `git push`
+# This is necessary in Bitbucket and should also work in Github
+# if you change the ssh-keyscan to `github.com`, so that you 
+# dont have to pass passwords in plain text
+
+# You will need to add an `id_rsa` file to the same path as the Dockerfile,
+# as Docker cannot operate on files outside the current working directory.
+
+# To generate an SSH key, follow the instructions at:
+# https://confluence.atlassian.com/bitbucket/set-up-ssh-for-git-728138079.html
+# The id_rsa file will then be found at ~/.ssh
+
+#ADD id_rsa /root/.ssh/id_rsa
+#RUN touch /root/.ssh/known_hosts
+#RUN chown root: /root/.ssh/id_rsa && chmod 600 /root/.ssh/id_rsa
+#RUN ssh-keyscan bitbucket.org >> /root/.ssh/known_hosts
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -8,6 +8,7 @@ DB_USER=admin
 DB_CONTAINER_NAME:=postgres-munkiwebadmin
 NAME:=munki-do
 DOCKER_RUN_COMMON=--name="$(NAME)" -p ${MWA_PORT}:8000 --link $(DB_CONTAINER_NAME):db -v ${MUNKI_REPO}:/munki_repo -e ADMIN_PASS=${ADMIN_PASS} -e DB_NAME=$(DB_NAME) -e DB_USER=$(DB_USER) -e DB_PASS=$(DB_PASS) ${DOCKER_USER}/${NAME}
+#DOCKER_RUN_COMMON=--name="$(NAME)" -p ${MWA_PORT}:8000 --link $(DB_CONTAINER_NAME):db -e ADMIN_PASS=${ADMIN_PASS} -e DB_NAME=$(DB_NAME) -e DB_USER=$(DB_USER) -e DB_PASS=$(DB_PASS) ${DOCKER_USER}/${NAME}
 
 
 all: build

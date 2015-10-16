@@ -20,7 +20,7 @@ PKGS_DIR = 'pkgs'
 # or commit
 #GIT_PATH = ''
 GIT_PATH = '/usr/bin/git'
-# If GIT_IGNORE_PKGS is not empty, git will attempt to remove packages.
+# If GIT_IGNORE_PKGS is empty, git will attempt to remove packages.
 # Otherwise, the packages will be deleted as standard.
 GIT_IGNORE_PKGS = 'yes'
 
@@ -246,8 +246,23 @@ LOGGING = {
             'class': 'logging.FileHandler',
             'filename': '/var/log/django/error.log',
         },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/debug.log',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': '/var/log/django/info.log',
+        },
     },
     'loggers': {
+        'django': {
+            'handlers':['file'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
         'manifests.models': {
             'handlers': ['file'],
             'level': 'ERROR',
@@ -255,7 +270,7 @@ LOGGING = {
         },
         'pkgs.models': {
             'handlers': ['file'],
-            'level': 'ERROR',
+            'level': 'INFO',
             'propagate': True,
         },
     }
